@@ -1,0 +1,6 @@
+OpenRGB is included as a separate program. It is licensed under GPL-2.0.
+LightSync talks to it over the local SDK. This package does not modify the OpenRGB upstream repository.
+
+The Windows build shipped here adds the Gigabyte RTX 5060 Ti Gaming OC 8G subsystem id 0x4193.
+That patch is stored in this project as patches/openrgb-rtx5060ti-8g.patch.
+OpenRGB source: https://gitlab.com/CalcProgrammer1/OpenRGB

@@ -1,0 +1,11 @@
+bin/
+obj/
+dist/
+publish/
+installer/output/
+installer/redist/
+.vendor/
+.atl/
+__pycache__/
+*.pyc
+*.user
