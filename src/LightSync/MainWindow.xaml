@@ -3,162 +3,278 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="LightSync"
         Icon="Assets/LightSync.ico"
-        Width="920"
+        Width="1280"
         Height="860"
-        MinWidth="860"
-        MinHeight="740"
+        MinWidth="1040"
+        MinHeight="720"
         WindowStartupLocation="CenterScreen"
-        Background="{StaticResource WindowBackground}"
-        Foreground="{StaticResource TextBrush}"
+        Background="#0A0D13"
+        Foreground="#F4F6FA"
         FontFamily="Segoe UI"
         UseLayoutRounding="True"
         SnapsToDevicePixels="True"
         TextOptions.TextFormattingMode="Display"
         TextOptions.TextRenderingMode="ClearType">
   <Window.Resources>
-    <LinearGradientBrush x:Key="WordmarkBrush" StartPoint="0,0.5" EndPoint="1,0.5">
-      <GradientStop Color="#F4F7FA" Offset="0" />
-      <GradientStop Color="#7DFFC3" Offset="0.48" />
-      <GradientStop Color="#4CB8FF" Offset="1" />
-    </LinearGradientBrush>
+    <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
   </Window.Resources>
-  <Grid>
-    <Ellipse Width="520" Height="220" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-80,-90,0,0" IsHitTestVisible="False">
-      <Ellipse.Fill>
-        <RadialGradientBrush>
-          <GradientStop Color="#3328FF9A" Offset="0" />
-          <GradientStop Color="#00070A10" Offset="1" />
-        </RadialGradientBrush>
-      </Ellipse.Fill>
-    </Ellipse>
-    <Grid Margin="32,26,32,24">
-      <Grid.RowDefinitions>
-        <RowDefinition Height="Auto" />
-        <RowDefinition Height="Auto" />
-        <RowDefinition Height="Auto" />
-        <RowDefinition Height="Auto" />
-        <RowDefinition Height="Auto" />
-        <RowDefinition Height="*" />
-        <RowDefinition Height="Auto" />
-      </Grid.RowDefinitions>
+  <Grid Margin="32,28,32,24">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
 
-      <DockPanel Grid.Row="0" Margin="0,0,0,22">
-        <Border DockPanel.Dock="Right" Background="#121822" BorderBrush="{StaticResource LineBrush}" BorderThickness="1" CornerRadius="999" Padding="12,7" VerticalAlignment="Center">
-          <StackPanel Orientation="Horizontal">
-            <Ellipse x:Name="StatusDot" Width="8" Height="8" Fill="{StaticResource MutedBrush}" Margin="0,0,8,0" VerticalAlignment="Center" />
-            <TextBlock x:Name="StatusPill" Text="Iniciando" FontSize="12" VerticalAlignment="Center" />
+    <DockPanel Grid.Row="0" Margin="0,0,0,22">
+      <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+        <Border Background="#0F1A17" BorderBrush="#1C3A30" BorderThickness="1" CornerRadius="18" Padding="14,8" Margin="0,0,12,0" Height="36">
+          <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <Ellipse x:Name="StatusDot" Width="8" Height="8" Fill="#34D399" Margin="0,0,8,0" />
+            <TextBlock x:Name="StatusPill" Text="Iniciando" FontSize="13" Foreground="#6EE7B7" />
           </StackPanel>
         </Border>
-        <StackPanel Orientation="Horizontal">
-          <Image Source="Assets/LightSync.ico" Width="46" Height="46" Margin="0,0,14,0" RenderOptions.BitmapScalingMode="HighQuality" />
-          <StackPanel VerticalAlignment="Center">
-            <TextBlock Text="LIGHTSYNC" FontSize="26" FontWeight="Bold" Foreground="{StaticResource WordmarkBrush}" />
-            <TextBlock Text="Un reloj. Toda la PC." Margin="0,2,0,0" Foreground="{StaticResource MutedBrush}" FontSize="13" />
-          </StackPanel>
-        </StackPanel>
-      </DockPanel>
-
-      <Border Grid.Row="1" Margin="0,0,0,22" CornerRadius="16" BorderBrush="#334055" BorderThickness="1" Padding="3" Background="#0C1018">
-        <Border Height="22" CornerRadius="13" ClipToBounds="True">
-          <Border x:Name="PreviewBar" CornerRadius="13" />
-        </Border>
-      </Border>
-
-      <StackPanel Grid.Row="2" Margin="0,0,0,16">
-        <TextBlock Text="EFECTO" Style="{StaticResource SectionLabel}" />
-        <UniformGrid Columns="3">
-          <RadioButton x:Name="SolidCard" GroupName="Effect" Style="{StaticResource EffectCard}" Margin="0,0,8,0" Checked="EffectPicked">
-            <StackPanel>
-              <TextBlock Text="Ciclo sólido" FontSize="15" FontWeight="SemiBold" />
-              <TextBlock Text="Todo cambia de color junto." Margin="0,6,0,0" Foreground="{StaticResource MutedBrush}" TextWrapping="Wrap" />
-            </StackPanel>
-          </RadioButton>
-          <RadioButton x:Name="RainbowCard" GroupName="Effect" Style="{StaticResource EffectCard}" Margin="4,0" Checked="EffectPicked">
-            <StackPanel>
-              <TextBlock Text="Arcoíris" FontSize="15" FontWeight="SemiBold" />
-              <TextBlock Text="La onda recorre las tiras." Margin="0,6,0,0" Foreground="{StaticResource MutedBrush}" TextWrapping="Wrap" />
-            </StackPanel>
-          </RadioButton>
-          <RadioButton x:Name="StaticCard" GroupName="Effect" Style="{StaticResource EffectCard}" Margin="8,0,0,0" Checked="EffectPicked">
-            <StackPanel>
-              <TextBlock Text="Color fijo" FontSize="15" FontWeight="SemiBold" />
-              <TextBlock Text="Un color, el que elijas." Margin="0,6,0,0" Foreground="{StaticResource MutedBrush}" TextWrapping="Wrap" />
-            </StackPanel>
-          </RadioButton>
-        </UniformGrid>
-        <StackPanel x:Name="ColorPanel" Margin="0,14,0,0" Visibility="Collapsed">
-          <TextBlock Text="ESPECTRO" Style="{StaticResource SectionLabel}" />
-          <Border CornerRadius="14" BorderBrush="{StaticResource LineBrush}" BorderThickness="1" Padding="3" Background="#0C1018">
-            <Grid x:Name="SpectrumHost" Height="120" Background="Transparent" ClipToBounds="True" Cursor="Cross"
-                  MouseLeftButtonDown="SpectrumDown" MouseMove="SpectrumMove" MouseLeftButtonUp="SpectrumUp">
-              <Image x:Name="SpectrumImage" Stretch="Fill" />
-              <Ellipse x:Name="SpectrumMarker" Width="16" Height="16" Stroke="White" StrokeThickness="2" Fill="#66000000"
-                       HorizontalAlignment="Left" VerticalAlignment="Top" IsHitTestVisible="False" />
-            </Grid>
+        <Button x:Name="PauseButton" Content="Pausar" Height="44" MinWidth="128" Padding="22,0" FontSize="14" FontWeight="SemiBold"
+                Click="PauseClick" IsEnabled="False" Cursor="Hand">
+          <Button.Template>
+            <ControlTemplate TargetType="Button">
+              <Border x:Name="Chrome" Background="#F4F6FA" CornerRadius="22" Padding="{TemplateBinding Padding}">
+                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" TextElement.Foreground="#0A0D13" />
+              </Border>
+              <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                  <Setter TargetName="Chrome" Property="Background" Value="#FFFFFF" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                  <Setter TargetName="Chrome" Property="Opacity" Value="0.45" />
+                </Trigger>
+              </ControlTemplate.Triggers>
+            </ControlTemplate>
+          </Button.Template>
+        </Button>
+      </StackPanel>
+      <StackPanel Orientation="Horizontal">
+        <Border Width="48" Height="48" CornerRadius="14" Background="#121722" BorderBrush="#222A39" BorderThickness="1" Margin="0,0,16,0">
+          <Border Width="24" Height="24" CornerRadius="7">
+            <Border.Background>
+              <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#FF4D6D" Offset="0" />
+                <GradientStop Color="#FFB020" Offset="0.3" />
+                <GradientStop Color="#34D399" Offset="0.55" />
+                <GradientStop Color="#38BDF8" Offset="0.75" />
+                <GradientStop Color="#A23BFF" Offset="1" />
+              </LinearGradientBrush>
+            </Border.Background>
           </Border>
+        </Border>
+        <StackPanel VerticalAlignment="Center">
+          <TextBlock Text="LightSync" FontSize="26" FontWeight="Bold" Foreground="#F4F6FA" />
+          <TextBlock Text="Un reloj. Toda la PC." Margin="0,2,0,0" Foreground="#8F9AB0" FontSize="13" />
         </StackPanel>
       </StackPanel>
+    </DockPanel>
 
-      <Border Grid.Row="3" Background="{StaticResource CardBackground}" BorderBrush="{StaticResource LineBrush}" BorderThickness="1" CornerRadius="16" Padding="16,14" Margin="0,0,0,16">
-        <DockPanel>
-          <ToggleButton x:Name="MusicToggle" DockPanel.Dock="Right" Content="Apagada" Style="{StaticResource MusicToggle}" Checked="MusicChanged" Unchecked="MusicChanged" VerticalAlignment="Center" />
-          <StackPanel>
-            <TextBlock Text="Música" FontSize="16" FontWeight="SemiBold" />
-            <TextBlock Text="En silencio se apaga y la onda se queda quieta. El volumen de Windows también baja el brillo." Margin="0,6,16,0" Foreground="{StaticResource MutedBrush}" TextWrapping="Wrap" />
-            <TextBlock x:Name="MusicDeviceText" Margin="0,4,16,0" FontSize="12" Foreground="{StaticResource MutedBrush}" TextWrapping="Wrap" />
+    <Border Grid.Row="1" Background="#10141D" BorderBrush="#1E2533" BorderThickness="1" CornerRadius="20" Padding="24,20,24,22" Margin="0,0,0,24">
+      <StackPanel>
+        <DockPanel Margin="0,0,0,16">
+          <TextBlock x:Name="SyncSummary" DockPanel.Dock="Right" Text="0 de 0 sincronizados" Foreground="#8F9AB0" FontSize="13" VerticalAlignment="Center" />
+          <StackPanel Orientation="Horizontal">
+            <TextBlock Text="AHORA" Foreground="#8F9AB0" FontSize="11" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,12,0" />
+            <TextBlock x:Name="EffectTitle" Text="Ciclo sólido" FontSize="20" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,12,0" />
+            <TextBlock x:Name="AccentHex" Text="" Foreground="#8F9AB0" FontSize="13" FontFamily="Cascadia Mono, Consolas" VerticalAlignment="Center" />
           </StackPanel>
         </DockPanel>
-      </Border>
-
-      <UniformGrid Grid.Row="4" Columns="2" Margin="0,0,0,16">
-        <Border Background="{StaticResource CardBackground}" BorderBrush="{StaticResource LineBrush}" BorderThickness="1" CornerRadius="16" Padding="16,14" Margin="0,0,8,0">
-          <StackPanel>
-            <DockPanel Margin="0,0,0,8">
-              <TextBlock x:Name="SpeedText" DockPanel.Dock="Right" Text="8 s" Foreground="{StaticResource TextBrush}" />
-              <TextBlock Text="VELOCIDAD" Style="{StaticResource SectionLabel}" Margin="0" />
-            </DockPanel>
-            <Slider x:Name="SpeedSlider" Minimum="2" Maximum="16" Value="8" IsDirectionReversed="True" TickFrequency="1" IsSnapToTickEnabled="True" ValueChanged="SpeedChanged" />
-            <DockPanel Margin="0,2,0,0">
-              <TextBlock Text="Lento" Foreground="{StaticResource MutedBrush}" FontSize="12" />
-              <TextBlock Text="Rápido" Foreground="{StaticResource MutedBrush}" FontSize="12" HorizontalAlignment="Right" />
-            </DockPanel>
-          </StackPanel>
+        <Border Height="56" CornerRadius="14" ClipToBounds="True">
+          <Border x:Name="PreviewBar" CornerRadius="14" />
         </Border>
-        <Border Background="{StaticResource CardBackground}" BorderBrush="{StaticResource LineBrush}" BorderThickness="1" CornerRadius="16" Padding="16,14" Margin="8,0,0,0">
-          <StackPanel>
-            <DockPanel Margin="0,0,0,8">
-              <TextBlock x:Name="BrightnessText" DockPanel.Dock="Right" Text="100 %" Foreground="{StaticResource TextBrush}" />
-              <TextBlock Text="BRILLO" Style="{StaticResource SectionLabel}" Margin="0" />
-            </DockPanel>
-            <Slider x:Name="BrightnessSlider" Minimum="0" Maximum="100" Value="100" TickFrequency="5" IsSnapToTickEnabled="True" ValueChanged="BrightnessChanged" />
-            <TextBlock x:Name="BrightnessHint" Margin="0,4,0,0" FontSize="12" Foreground="{StaticResource MutedBrush}" Text="Con música, manda el volumen de Windows." Visibility="Collapsed" TextWrapping="Wrap" />
-          </StackPanel>
-        </Border>
-      </UniformGrid>
+      </StackPanel>
+    </Border>
 
-      <DockPanel Grid.Row="5">
-        <TextBlock DockPanel.Dock="Top" Text="DISPOSITIVOS" Style="{StaticResource SectionLabel}" />
-        <TextBlock x:Name="StatusText" DockPanel.Dock="Bottom" Margin="0,8,0,0" Foreground="{StaticResource MutedBrush}" TextWrapping="Wrap" Visibility="Collapsed" />
-        <ListBox x:Name="DeviceList">
+    <Grid Grid.Row="2">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="420" MinWidth="360" MaxWidth="460" />
+        <ColumnDefinition Width="24" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+
+      <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto">
+        <StackPanel>
+          <TextBlock Text="EFECTO" Foreground="#8F9AB0" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,10" />
+          <RadioButton x:Name="SolidCard" GroupName="Effect" Style="{StaticResource EffectCard}" Margin="0,0,0,10" Checked="EffectPicked">
+            <DockPanel>
+              <Border Width="52" Height="40" CornerRadius="10" Margin="0,0,14,0">
+                <Border.Background>
+                  <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                    <GradientStop Color="#FF4D6D" Offset="0" />
+                    <GradientStop Color="#FF4D6D" Offset="0.33" />
+                    <GradientStop Color="#34D399" Offset="0.33" />
+                    <GradientStop Color="#34D399" Offset="0.66" />
+                    <GradientStop Color="#38BDF8" Offset="0.66" />
+                  </LinearGradientBrush>
+                </Border.Background>
+              </Border>
+              <StackPanel VerticalAlignment="Center">
+                <TextBlock Text="Ciclo sólido" FontSize="15" FontWeight="SemiBold" />
+                <TextBlock Text="Todo cambia de color junto." Margin="0,3,0,0" Foreground="#98A2B6" FontSize="12.5" />
+              </StackPanel>
+            </DockPanel>
+          </RadioButton>
+          <RadioButton x:Name="RainbowCard" GroupName="Effect" Style="{StaticResource EffectCard}" Margin="0,0,0,10" Checked="EffectPicked">
+            <DockPanel>
+              <Border Width="52" Height="40" CornerRadius="10" Margin="0,0,14,0">
+                <Border.Background>
+                  <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                    <GradientStop Color="#FF4D6D" Offset="0" />
+                    <GradientStop Color="#FFB020" Offset="0.25" />
+                    <GradientStop Color="#34D399" Offset="0.5" />
+                    <GradientStop Color="#38BDF8" Offset="0.75" />
+                    <GradientStop Color="#A23BFF" Offset="1" />
+                  </LinearGradientBrush>
+                </Border.Background>
+              </Border>
+              <StackPanel VerticalAlignment="Center">
+                <TextBlock Text="Arcoíris" FontSize="15" FontWeight="SemiBold" />
+                <TextBlock Text="La onda recorre las tiras." Margin="0,3,0,0" Foreground="#98A2B6" FontSize="12.5" />
+              </StackPanel>
+            </DockPanel>
+          </RadioButton>
+          <RadioButton x:Name="StaticCard" GroupName="Effect" Style="{StaticResource EffectCard}" Margin="0,0,0,10" Checked="EffectPicked">
+            <DockPanel>
+              <Border Width="52" Height="40" CornerRadius="10" Background="#1A2030" BorderBrush="#2A3244" BorderThickness="1" Margin="0,0,14,0">
+                <Ellipse x:Name="StaticSwatch" Width="18" Height="18" Fill="#9B30FF" />
+              </Border>
+              <StackPanel VerticalAlignment="Center">
+                <TextBlock Text="Color fijo" FontSize="15" FontWeight="SemiBold" />
+                <TextBlock Text="Un color, el que elijas." Margin="0,3,0,0" Foreground="#98A2B6" FontSize="12.5" />
+              </StackPanel>
+            </DockPanel>
+          </RadioButton>
+
+          <Border x:Name="ColorPanel" Background="#10141D" BorderBrush="#1E2533" BorderThickness="1" CornerRadius="16" Padding="18" Margin="0,0,0,16" Visibility="Collapsed">
+            <StackPanel>
+              <TextBlock Text="RÁPIDOS" Foreground="#8F9AB0" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,10" />
+              <WrapPanel>
+                <Button Tag="#FF2D2D" Click="QuickColorClick" Style="{StaticResource QuietButton}" Width="34" Height="34" Padding="0" Margin="0,0,6,6" Background="Transparent" BorderThickness="0" ToolTip="Rojo"><Ellipse Width="24" Height="24" Fill="#FF2D2D" /></Button>
+                <Button Tag="#FF7A00" Click="QuickColorClick" Style="{StaticResource QuietButton}" Width="34" Height="34" Padding="0" Margin="0,0,6,6" Background="Transparent" BorderThickness="0" ToolTip="Naranja"><Ellipse Width="24" Height="24" Fill="#FF7A00" /></Button>
+                <Button Tag="#FFB020" Click="QuickColorClick" Style="{StaticResource QuietButton}" Width="34" Height="34" Padding="0" Margin="0,0,6,6" Background="Transparent" BorderThickness="0" ToolTip="Ámbar"><Ellipse Width="24" Height="24" Fill="#FFB020" /></Button>
+                <Button Tag="#22E06B" Click="QuickColorClick" Style="{StaticResource QuietButton}" Width="34" Height="34" Padding="0" Margin="0,0,6,6" Background="Transparent" BorderThickness="0" ToolTip="Verde"><Ellipse Width="24" Height="24" Fill="#22E06B" /></Button>
+                <Button Tag="#00E5FF" Click="QuickColorClick" Style="{StaticResource QuietButton}" Width="34" Height="34" Padding="0" Margin="0,0,6,6" Background="Transparent" BorderThickness="0" ToolTip="Cian"><Ellipse Width="24" Height="24" Fill="#00E5FF" /></Button>
+                <Button Tag="#2F5BFF" Click="QuickColorClick" Style="{StaticResource QuietButton}" Width="34" Height="34" Padding="0" Margin="0,0,6,6" Background="Transparent" BorderThickness="0" ToolTip="Azul"><Ellipse Width="24" Height="24" Fill="#2F5BFF" /></Button>
+                <Button Tag="#9B30FF" Click="QuickColorClick" Style="{StaticResource QuietButton}" Width="34" Height="34" Padding="0" Margin="0,0,6,6" Background="Transparent" BorderThickness="0" ToolTip="Morado"><Ellipse Width="24" Height="24" Fill="#9B30FF" /></Button>
+                <Button Tag="#FF3DB8" Click="QuickColorClick" Style="{StaticResource QuietButton}" Width="34" Height="34" Padding="0" Margin="0,0,6,6" Background="Transparent" BorderThickness="0" ToolTip="Rosa"><Ellipse Width="24" Height="24" Fill="#FF3DB8" /></Button>
+                <Button Tag="#FFD8A8" Click="QuickColorClick" Style="{StaticResource QuietButton}" Width="34" Height="34" Padding="0" Margin="0,0,6,6" Background="Transparent" BorderThickness="0" ToolTip="Blanco cálido"><Ellipse Width="24" Height="24" Fill="#FFD8A8" /></Button>
+                <Button Tag="#FFFFFF" Click="QuickColorClick" Style="{StaticResource QuietButton}" Width="34" Height="34" Padding="0" Margin="0,0,6,6" Background="Transparent" BorderThickness="0" ToolTip="Blanco"><Ellipse Width="24" Height="24" Fill="#FFFFFF" /></Button>
+              </WrapPanel>
+              <Border Height="1" Background="#1E2533" Margin="0,12,0,18" />
+              <DockPanel>
+                <Grid x:Name="SpectrumHost" Width="200" Height="200" Margin="0,0,20,0" Cursor="Cross" ClipToBounds="True"
+                      MouseLeftButtonDown="SpectrumDown" MouseMove="SpectrumMove" MouseLeftButtonUp="SpectrumUp">
+                  <Image x:Name="SpectrumImage" Width="200" Height="200" Stretch="Fill" />
+                  <Ellipse x:Name="SpectrumMarker" Width="20" Height="20" Stroke="White" StrokeThickness="3" Fill="#9B30FF"
+                           HorizontalAlignment="Left" VerticalAlignment="Top" IsHitTestVisible="False" />
+                </Grid>
+                <StackPanel VerticalAlignment="Center">
+                  <Border x:Name="HexPreview" Height="56" CornerRadius="12" Background="#9B30FF" BorderBrush="#2A3244" BorderThickness="1" Margin="0,0,0,16" />
+                  <TextBlock Text="HEX" Foreground="#8F9AB0" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,6" />
+                  <TextBox x:Name="HexBox" Height="36" Padding="10,0" FontFamily="Cascadia Mono, Consolas" FontSize="13"
+                           Background="#151A25" Foreground="#F4F6FA" BorderBrush="#C9A4FF" BorderThickness="1"
+                           VerticalContentAlignment="Center" KeyDown="HexCommit" />
+                  <TextBlock Text="Arrastrá en la rueda o escribí un #RRGGBB." Margin="0,8,0,0" Foreground="#98A2B6" FontSize="12" TextWrapping="Wrap" />
+                </StackPanel>
+              </DockPanel>
+            </StackPanel>
+          </Border>
+
+          <Border Background="#10141D" BorderBrush="#1E2533" BorderThickness="1" CornerRadius="16" Padding="20">
+            <StackPanel>
+              <DockPanel Margin="0,0,0,12">
+                <TextBlock x:Name="SpeedText" DockPanel.Dock="Right" Text="8 s" FontWeight="SemiBold" />
+                <TextBlock Text="Velocidad" FontWeight="SemiBold" />
+              </DockPanel>
+              <Slider x:Name="SpeedSlider" Minimum="2" Maximum="16" Value="8" IsDirectionReversed="True" TickFrequency="1" IsSnapToTickEnabled="True" ValueChanged="SpeedChanged" />
+              <DockPanel Margin="0,2,0,18">
+                <TextBlock Text="Lento" Foreground="#8F9AB0" FontSize="12" />
+                <TextBlock Text="Rápido" Foreground="#8F9AB0" FontSize="12" HorizontalAlignment="Right" />
+              </DockPanel>
+              <Border Height="1" Background="#1E2533" Margin="0,0,0,18" />
+              <DockPanel Margin="0,0,0,12">
+                <TextBlock x:Name="BrightnessText" DockPanel.Dock="Right" Text="100 %" FontWeight="SemiBold" />
+                <TextBlock Text="Brillo" FontWeight="SemiBold" />
+              </DockPanel>
+              <Slider x:Name="BrightnessSlider" Minimum="0" Maximum="100" Value="100" TickFrequency="5" IsSnapToTickEnabled="True" ValueChanged="BrightnessChanged" />
+              <TextBlock x:Name="BrightnessHint" Margin="0,8,0,18" FontSize="12" Foreground="#8F9AB0" Text="Con música, manda el volumen de Windows." Visibility="Collapsed" TextWrapping="Wrap" />
+              <Border Height="1" Background="#1E2533" Margin="0,0,0,18" />
+              <DockPanel>
+                <ToggleButton x:Name="MusicToggle" DockPanel.Dock="Right" Content="Activar música" Style="{StaticResource MusicToggle}" Checked="MusicChanged" Unchecked="MusicChanged" VerticalAlignment="Center" />
+                <StackPanel Margin="0,0,14,0">
+                  <TextBlock Text="Reaccionar a la música" FontSize="14" FontWeight="SemiBold" />
+                  <TextBlock Text="En silencio se apaga y la onda se queda quieta. El volumen de Windows también baja el brillo." Margin="0,3,0,0" Foreground="#98A2B6" FontSize="12.5" TextWrapping="Wrap" />
+                  <TextBlock x:Name="MusicDeviceText" Margin="0,4,0,0" FontSize="12" Foreground="#6EE7B7" TextWrapping="Wrap" />
+                </StackPanel>
+              </DockPanel>
+            </StackPanel>
+          </Border>
+          <Button x:Name="RetryButton" Content="Reintentar" Style="{StaticResource QuietButton}" Click="RetryClick" Visibility="Collapsed" HorizontalAlignment="Left" Margin="0,12,0,0" />
+          <Button x:Name="RescanButton" Content="Buscar focos" Style="{StaticResource QuietButton}" Click="RescanClick" HorizontalAlignment="Left" Margin="0,12,0,0" />
+        </StackPanel>
+      </ScrollViewer>
+
+      <DockPanel Grid.Column="2">
+        <DockPanel DockPanel.Dock="Top" Margin="0,0,0,12">
+          <TextBlock x:Name="DeviceHeading" Text="DISPOSITIVOS" Foreground="#8F9AB0" FontSize="11" FontWeight="SemiBold" VerticalAlignment="Center" />
+          <Border HorizontalAlignment="Right" Background="#10141D" BorderBrush="#1E2533" BorderThickness="1" CornerRadius="12" Padding="4">
+            <StackPanel Orientation="Horizontal">
+              <Button x:Name="FilterAll" Content="Todos · 0" Tag="all" Click="FilterClick" Style="{StaticResource QuietButton}" Padding="12,6" FontSize="12.5" Margin="0,0,4,0" Background="#1E2533" BorderThickness="0" />
+              <Button x:Name="FilterLights" Content="Focos · 0" Tag="light" Click="FilterClick" Style="{StaticResource QuietButton}" Padding="12,6" FontSize="12.5" Margin="0,0,4,0" Background="Transparent" BorderThickness="0" />
+              <Button x:Name="FilterPlugs" Content="Enchufes · 0" Tag="plug" Click="FilterClick" Style="{StaticResource QuietButton}" Padding="12,6" FontSize="12.5" Margin="0,0,4,0" Background="Transparent" BorderThickness="0" />
+              <Button x:Name="FilterPc" Content="PC · 0" Tag="pc" Click="FilterClick" Style="{StaticResource QuietButton}" Padding="12,6" FontSize="12.5" Background="Transparent" BorderThickness="0" />
+            </StackPanel>
+          </Border>
+        </DockPanel>
+        <TextBlock x:Name="LanStatus" DockPanel.Dock="Top" Margin="0,0,0,8" Foreground="#8F9AB0" FontSize="12" TextWrapping="Wrap" Visibility="Collapsed" />
+        <TextBlock x:Name="StatusText" DockPanel.Dock="Bottom" Margin="0,8,0,0" Foreground="#8F9AB0" TextWrapping="Wrap" Visibility="Collapsed" />
+        <ListBox x:Name="DeviceList" Foreground="#FFFFFF" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+          <ListBox.ItemsPanel>
+            <ItemsPanelTemplate>
+              <WrapPanel />
+            </ItemsPanelTemplate>
+          </ListBox.ItemsPanel>
+          <ListBox.ItemContainerStyle>
+            <Style TargetType="ListBoxItem">
+              <Setter Property="Width" Value="300" />
+              <Setter Property="Margin" Value="0,0,12,12" />
+              <Setter Property="Padding" Value="0" />
+              <Setter Property="Focusable" Value="False" />
+              <Setter Property="Template">
+                <Setter.Value>
+                  <ControlTemplate TargetType="ListBoxItem">
+                    <ContentPresenter />
+                  </ControlTemplate>
+                </Setter.Value>
+              </Setter>
+            </Style>
+          </ListBox.ItemContainerStyle>
           <ListBox.ItemTemplate>
             <DataTemplate>
-              <Border Background="{StaticResource CardBackground}" BorderBrush="{StaticResource LineBrush}" BorderThickness="1" CornerRadius="12" Padding="14,11" Margin="0,0,0,8">
-                <DockPanel>
-                  <TextBlock DockPanel.Dock="Right" Text="{Binding Detail}" Foreground="{StaticResource MutedBrush}" VerticalAlignment="Center" />
-                  <StackPanel>
-                    <TextBlock Text="{Binding Role}" FontWeight="SemiBold" />
-                    <TextBlock Text="{Binding Name}" Margin="0,2,12,0" Foreground="{StaticResource MutedBrush}" FontSize="12" TextTrimming="CharacterEllipsis" />
-                  </StackPanel>
-                </DockPanel>
+              <Border Background="#10141D" BorderBrush="#1E2533" BorderThickness="1" CornerRadius="16" Padding="16">
+                <StackPanel>
+                  <DockPanel>
+                    <Button DockPanel.Dock="Right" Content="{Binding PowerLabel}" Click="PowerClick" Style="{StaticResource QuietButton}" Padding="10,6" FontSize="12" VerticalAlignment="Center" />
+                    <StackPanel>
+                      <TextBlock Text="{Binding Name}" FontSize="14" FontWeight="SemiBold" Foreground="#FFFFFF" TextTrimming="CharacterEllipsis" />
+                      <TextBlock Text="{Binding Detail}" Margin="0,2,8,0" FontSize="12" Foreground="#8F9AB0" TextTrimming="CharacterEllipsis" />
+                    </StackPanel>
+                  </DockPanel>
+                  <TextBlock Text="{Binding Meta}" Margin="0,8,0,0" FontSize="12" Foreground="#8F9AB0" TextWrapping="Wrap"
+                             Visibility="{Binding HasMeta, Converter={StaticResource BoolToVisibility}}" />
+                  <DockPanel Margin="0,14,0,0" Visibility="{Binding ShowSync, Converter={StaticResource BoolToVisibility}}">
+                    <TextBlock DockPanel.Dock="Right" Text="{Binding Role}" Foreground="#7C879C" FontSize="11.5" FontFamily="Cascadia Mono, Consolas" VerticalAlignment="Center" />
+                    <Button Content="{Binding SyncLabel}" Click="SyncClick" Style="{StaticResource QuietButton}" Padding="12,6" FontSize="12.5" HorizontalAlignment="Left" />
+                  </DockPanel>
+                </StackPanel>
               </Border>
             </DataTemplate>
           </ListBox.ItemTemplate>
         </ListBox>
-      </DockPanel>
-
-      <DockPanel Grid.Row="6" Margin="0,14,0,0">
-        <Button x:Name="RetryButton" DockPanel.Dock="Left" Content="Reintentar" Style="{StaticResource QuietButton}" Click="RetryClick" Visibility="Collapsed" />
-        <Button x:Name="PauseButton" Content="Pausar" MinWidth="140" Style="{StaticResource QuietButton}" HorizontalAlignment="Right" Click="PauseClick" IsEnabled="False" />
       </DockPanel>
     </Grid>
   </Grid>

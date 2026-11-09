@@ -3,15 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              ShutdownMode="OnMainWindowClose">
   <Application.Resources>
-    <SolidColorBrush x:Key="WindowBackground" Color="#070A10" />
-    <SolidColorBrush x:Key="PanelBackground" Color="#10151E" />
-    <SolidColorBrush x:Key="CardBackground" Color="#141A24" />
-    <SolidColorBrush x:Key="CardHover" Color="#1C2432" />
-    <SolidColorBrush x:Key="LineBrush" Color="#2A3344" />
-    <SolidColorBrush x:Key="TextBrush" Color="#F7F8FA" />
-    <SolidColorBrush x:Key="MutedBrush" Color="#8D97A8" />
-    <SolidColorBrush x:Key="AccentBrush" Color="#7DFFC3" />
-    <SolidColorBrush x:Key="OkBrush" Color="#3DDC97" />
+    <SolidColorBrush x:Key="WindowBackground" Color="#0A0D13" />
+    <SolidColorBrush x:Key="PanelBackground" Color="#10141D" />
+    <SolidColorBrush x:Key="CardBackground" Color="#10141D" />
+    <SolidColorBrush x:Key="CardHover" Color="#161B27" />
+    <SolidColorBrush x:Key="LineBrush" Color="#1E2533" />
+    <SolidColorBrush x:Key="TextBrush" Color="#F4F6FA" />
+    <SolidColorBrush x:Key="MutedBrush" Color="#8F9AB0" />
+    <SolidColorBrush x:Key="AccentBrush" Color="#C9A4FF" />
+    <SolidColorBrush x:Key="OkBrush" Color="#34D399" />
 
     <Style x:Key="SectionLabel" TargetType="TextBlock">
       <Setter Property="Foreground" Value="{StaticResource MutedBrush}" />
@@ -47,25 +47,30 @@
     </Style>
 
     <Style x:Key="MusicToggle" TargetType="ToggleButton">
-      <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
-      <Setter Property="Background" Value="#10141C" />
-      <Setter Property="BorderBrush" Value="{StaticResource LineBrush}" />
-      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="Foreground" Value="#F4F6FA" />
+      <Setter Property="Background" Value="#2A3244" />
+      <Setter Property="BorderThickness" Value="0" />
       <Setter Property="Padding" Value="14,8" />
+      <Setter Property="MinWidth" Value="132" />
       <Setter Property="FontSize" Value="13" />
+      <Setter Property="FontWeight" Value="SemiBold" />
       <Setter Property="Cursor" Value="Hand" />
       <Setter Property="Template">
         <Setter.Value>
           <ControlTemplate TargetType="ToggleButton">
-            <Border x:Name="Chrome" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="10" Padding="{TemplateBinding Padding}">
+            <Border x:Name="Chrome" Background="{TemplateBinding Background}" CornerRadius="16" Padding="{TemplateBinding Padding}">
               <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
             </Border>
             <ControlTemplate.Triggers>
               <Trigger Property="IsChecked" Value="True">
-                <Setter TargetName="Chrome" Property="BorderBrush" Value="{StaticResource AccentBrush}" />
+                <Setter TargetName="Chrome" Property="Background" Value="#34D399" />
+                <Setter Property="Foreground" Value="#06281C" />
               </Trigger>
               <Trigger Property="IsMouseOver" Value="True">
-                <Setter TargetName="Chrome" Property="Background" Value="{StaticResource CardHover}" />
+                <Setter TargetName="Chrome" Property="Opacity" Value="0.92" />
+              </Trigger>
+              <Trigger Property="IsEnabled" Value="False">
+                <Setter TargetName="Chrome" Property="Opacity" Value="0.45" />
               </Trigger>
             </ControlTemplate.Triggers>
           </ControlTemplate>
@@ -81,17 +86,21 @@
       <Setter Property="Template">
         <Setter.Value>
           <ControlTemplate TargetType="RadioButton">
-            <Border x:Name="Card" Background="{TemplateBinding Background}" BorderBrush="{StaticResource LineBrush}" BorderThickness="1" CornerRadius="16" Padding="14,16">
+            <Border x:Name="Card" Background="#10141D" BorderBrush="#1E2533" BorderThickness="1.5" CornerRadius="16" Padding="14">
               <DockPanel>
-                <Border x:Name="Accent" DockPanel.Dock="Top" Height="3" CornerRadius="2" Background="Transparent" Margin="0,0,0,12" />
-                <ContentPresenter />
+                <Border x:Name="Check" DockPanel.Dock="Right" Width="22" Height="22" CornerRadius="11" BorderBrush="#2E3748" BorderThickness="1.5" VerticalAlignment="Center" Margin="12,0,0,0">
+                  <TextBlock x:Name="Tick" Text="✓" FontSize="12" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed" />
+                </Border>
+                <ContentPresenter VerticalAlignment="Center" />
               </DockPanel>
             </Border>
             <ControlTemplate.Triggers>
               <Trigger Property="IsChecked" Value="True">
-                <Setter TargetName="Card" Property="BorderBrush" Value="#7DFFC3" />
-                <Setter TargetName="Card" Property="Background" Value="#172033" />
-                <Setter TargetName="Accent" Property="Background" Value="#7DFFC3" />
+                <Setter TargetName="Card" Property="BorderBrush" Value="#C9A4FF" />
+                <Setter TargetName="Card" Property="Background" Value="#161B27" />
+                <Setter TargetName="Check" Property="Background" Value="#C9A4FF" />
+                <Setter TargetName="Check" Property="BorderBrush" Value="#C9A4FF" />
+                <Setter TargetName="Tick" Property="Visibility" Value="Visible" />
               </Trigger>
               <Trigger Property="IsMouseOver" Value="True">
                 <Setter TargetName="Card" Property="Background" Value="{StaticResource CardHover}" />

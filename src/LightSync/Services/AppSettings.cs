@@ -20,6 +20,12 @@ public sealed class AppSettings
 
     public byte StaticBlue { get; set; } = 140;
 
+    public List<string> SyncedLights { get; set; } = [];
+
+    public List<string> PcWhite { get; set; } = [];
+
+    public List<string> PcOff { get; set; } = [];
+
     public static string Path { get; } = System.IO.Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
         "LightSync",
@@ -34,7 +40,11 @@ public sealed class AppSettings
                 return new AppSettings();
             }
 
-            return JsonSerializer.Deserialize<AppSettings>(File.ReadAllText(Path)) ?? new AppSettings();
+            var settings = JsonSerializer.Deserialize<AppSettings>(File.ReadAllText(Path)) ?? new AppSettings();
+            settings.SyncedLights ??= [];
+            settings.PcWhite ??= [];
+            settings.PcOff ??= [];
+            return settings;
         }
         catch (Exception exception) when (exception is IOException or JsonException or UnauthorizedAccessException)
         {

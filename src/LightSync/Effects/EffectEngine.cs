@@ -20,6 +20,12 @@ public sealed class EffectEngine : IDisposable
     private float _phase;
     private bool _reassert;
     private bool _wasDark;
+    private int _restart;
+    private TaskCompletionSource<RgbColor>? _restarted;
+    private readonly HashSet<string> _pcUnsynced = new(StringComparer.OrdinalIgnoreCase);
+    private readonly HashSet<string> _pcOff = new(StringComparer.OrdinalIgnoreCase);
+    private readonly Dictionary<string, string> _held = new(StringComparer.OrdinalIgnoreCase);
+    private static readonly RgbColor ColdWhite = new(210, 228, 255);
 
     public IReadOnlyList<LightingDevice> Devices { get; private set; } = [];
 
@@ -84,6 +90,74 @@ public sealed class EffectEngine : IDisposable
             _music = false;
             return exception.Message;
         }
+    }
+
+    public void LoadPcModes(IEnumerable<string>? white, IEnumerable<string>? off)
+    {
+        _pcUnsynced.Clear();
+        _pcOff.Clear();
+        _held.Clear();
+        if (white is not null)
+        {
+            foreach (var name in white)
+            {
+                _pcUnsynced.Add(name);
+            }
+        }
+
+        if (off is not null)
+        {
+            foreach (var name in off)
+            {
+                _pcOff.Add(name);
+            }
+        }
+    }
+
+    public bool IsPcSynced(string name) => !_pcUnsynced.Contains(name);
+
+    public bool IsPcOn(string name) => !_pcOff.Contains(name);
+
+    public IReadOnlyCollection<string> PcWhite => _pcUnsynced;
+
+    public IReadOnlyCollection<string> PcOff => _pcOff;
+
+    public void SetPcSync(string name, bool sync)
+    {
+        if (sync)
+        {
+            _pcUnsynced.Remove(name);
+            _pcOff.Remove(name);
+        }
+        else
+        {
+            _pcUnsynced.Add(name);
+            _pcOff.Remove(name);
+        }
+
+        _held.Remove(name);
+    }
+
+    public void SetPcPower(string name, bool on)
+    {
+        if (on)
+        {
+            _pcOff.Remove(name);
+        }
+        else
+        {
+            _pcOff.Add(name);
+        }
+
+        _held.Remove(name);
+    }
+
+    public Task<RgbColor> RestartCycleAsync()
+    {
+        var source = new TaskCompletionSource<RgbColor>(TaskCreationOptions.RunContinuationsAsynchronously);
+        _restarted = source;
+        Interlocked.Exchange(ref _restart, 1);
+        return source.Task.WaitAsync(TimeSpan.FromMilliseconds(250));
     }
 
     public void Start(EffectKind effect, float cycleSeconds)
@@ -207,7 +281,12 @@ public sealed class EffectEngine : IDisposable
                 last = now;
                 var level = DisplayLevel;
                 var dark = _music && level <= 0.02f;
-                if (!_music || !dark)
+                var restarted = Interlocked.Exchange(ref _restart, 0) == 1;
+                if (restarted)
+                {
+                    _phase = 0f;
+                }
+                else if (!_music || !dark)
                 {
                     _phase += elapsed / Math.Max(_cycleSeconds, 2f);
                 }
@@ -220,6 +299,12 @@ public sealed class EffectEngine : IDisposable
 
                 _wasDark = dark;
                 Paint(_phase, level);
+                if (restarted)
+                {
+                    _restarted?.TrySetResult(LastColor);
+                    _restarted = null;
+                }
+
                 _client.DrainAcks();
 
                 var remaining = frame - nextFrame.Elapsed;
@@ -236,9 +321,23 @@ public sealed class EffectEngine : IDisposable
         }
     }
 
+    private void Hold(LightingDevice device, int count, RgbColor color, string key)
+    {
+        if (_held.TryGetValue(device.Name, out var held) && held == key)
+        {
+            return;
+        }
+
+        var colors = new RgbColor[count];
+        Array.Fill(colors, color);
+        _client.UpdateLeds(device.Id, colors);
+        _held[device.Name] = key;
+    }
+
     private void Paint(float phase, float level)
     {
         _phase = phase;
+        RgbColor? lead = null;
         foreach (var device in Devices)
         {
             if (device.LedCount == 0)
@@ -252,13 +351,41 @@ public sealed class EffectEngine : IDisposable
                 colors[index] = colors[index].Scale(level);
             }
 
-            if (colors.Length > 0)
+            if (colors.Length > 0 && lead is null)
             {
-                LastColor = colors[0];
-                HasFrame = true;
+                lead = colors[0];
             }
 
-            _client.UpdateLeds(device.Id, colors);
+            if (_pcOff.Contains(device.Name))
+            {
+                Hold(device, colors.Length, default, "off");
+                continue;
+            }
+
+            if (_pcUnsynced.Contains(device.Name))
+            {
+                Hold(device, colors.Length, ColdWhite, "white");
+                continue;
+            }
+
+            _held.Remove(device.Name);
+            if (colors.Length > 0)
+            {
+                _client.UpdateLeds(device.Id, colors);
+            }
+        }
+
+        if (lead is not null)
+        {
+            LastColor = lead.Value;
+            HasFrame = true;
+        }
+
+        if (HasFrame)
+        {
+            FramePainted?.Invoke(LastColor);
         }
     }
+
+    public Action<RgbColor>? FramePainted { get; set; }
 }
